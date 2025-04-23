@@ -2,50 +2,56 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        // === PRODUTOS ===
-        Remedios dipirona = new Remedios("Dipirona", 6.50, LocalDate.of(2025, 5, 10));
-        Remedios buscopan = new Remedios("Buscopan", 20.00, LocalDate.of(2026, 1, 1));
-        Remedios neosoro = new Remedios("Neosoro", 15.00, LocalDate.of(2025, 8, 25));
-
-        // === INVENTÁRIO ===
+        // Criar o inventário da farmácia
         Inventario inventario = new Inventario();
-        inventario.adicionarRemedios(dipirona, 30);
-        inventario.adicionarRemedios(buscopan, 50);
-        inventario.adicionarRemedios(neosoro, 40);
 
-        // === FUNCIONÁRIOS ===
-        Caixa caixa = new Caixa("Superman", "Caixa", 3000.00);
-        Gerente gerente = new Gerente("Caçador de Marte", "Gerente", 9000.00);
+        // Criar alguns remédios
+        Remedios dorflex = new Remedios("Dorflex", 15.0, LocalDate.of(2026, 6, 30));
+        dorflex.adicionarMarcas("Sanofi");
 
-        // === CLIENTES ===
-        Cliente cliente1 = new Cliente("Batman", "12345678900", true); // registrado e CPF válido
-        Cliente cliente2 = new Cliente("Pato Donald", "1251235486", false);    // não registrado
-        Cliente cliente3 = new Cliente("Clodovil", "7512399854226", true); // registrado e válido
+        Remedios paracetamol = new Remedios("Paracetamol", 10.0, LocalDate.of(2025, 12, 31));
+        paracetamol.adicionarMarcas("Neo Química");
+        paracetamol.adicionarMarcas("EMS");
 
-        // === TESTES DE VENDA ===
-        System.out.println("\n[VENDA 1] Caixa tenta aplicar 6% → falha");
-        caixa.processarVenda(inventario, dipirona, 2, cliente1, 6.0);
+        Remedios ibuprofeno = new Remedios("Ibuprofeno", 12.5, LocalDate.of(2025, 10, 20));
+        ibuprofeno.adicionarMarcas("Medley");
 
-        System.out.println("\n[VENDA 2] Caixa aplica 5% → sucesso");
-        caixa.processarVenda(inventario, dipirona, 2, cliente1, 5.0);
+        // Adicionar ao inventário
+        inventario.adicionarRemedios(dorflex, 50);
+        inventario.adicionarRemedios(paracetamol, 80);
+        inventario.adicionarRemedios(ibuprofeno, 60);
 
-        System.out.println("\n[VENDA 3] Gerente aplica 25% → sucesso");
-        gerente.processarVenda(inventario, buscopan, 3, cliente2, 25.0);
+        // Criar funcionários: Gerente (Batman), Caixa (Homem-Aranha)
+        Gerente gerente = new Gerente("Bruce Wayne", "Gerente", 10000.0, inventario);
+        Caixa caixa = new Caixa("Peter Parker", "Caixa", 3000.0, inventario);
 
-        System.out.println("\n[VENDA 4] Gerente tenta aplicar 35% → falha");
-        gerente.processarVenda(inventario, neosoro, 1, cliente3, 35.0);
+        // Criar clientes: Superman (registrado), Mulher-Maravilha (não registrada)
+        Cliente superman = new Cliente("Clark Kent", "123.456.789-00", true);
+        Cliente mulherMaravilha = new Cliente("Diana Prince", "987.654.321-00", false);
 
-        System.out.println("\n[VENDA 5] Gerente aplica 10% para cliente registrado");
-        gerente.processarVenda(inventario, neosoro, 2, cliente3, 10.0);
+        // Caixa realiza uma venda com pequeno desconto para cliente registrado
+        System.out.println("\nVENDA 1 - Caixa (Homem-Aranha) vendendo para Superman:");
+        caixa.processarVendas(paracetamol, 3, superman, 3.0);
 
-        // === HISTÓRICO DE COMPRAS DOS CLIENTES ===
-        System.out.println("\n=== HISTÓRICO DE COMPRAS DE CLIENTES ===");
-        cliente1.exibirHistorico();
-        cliente2.exibirHistorico();
-        cliente3.exibirHistorico();
+        // Gerente realiza uma venda com maior desconto
+        System.out.println("\nVENDA 2 - Gerente (Batman) vendendo para Mulher-Maravilha:");
+        gerente.processarVendas(ibuprofeno, 2, mulherMaravilha, 25.0);
 
-        // === ESTOQUE ATUAL ===
-        System.out.println("\n=== ESTOQUE FINAL ===");
+        // Gerente aplica desconto direto a um produto
+        System.out.println("\nDesconto direto aplicado por Gerente (Batman):");
+        gerente.aplicarDesconto(dorflex, 10.0);
+
+        // Venda após desconto aplicado ao produto
+        System.out.println("\nVENDA 3 - Caixa vendendo Dorflex com preço já alterado:");
+        caixa.processarVendas(dorflex, 5, superman, 2.0);
+
+        // Listar histórico de vendas do cliente
+        System.out.println("\nHistórico de compras do Superman:");
+        for (String compra : superman.getHistoricoDeCompras()) {
+            System.out.println("\n" + compra);
+        }
+
+        System.out.println("\nInventário atualizado:");
         inventario.listarEstoque();
     }
 }

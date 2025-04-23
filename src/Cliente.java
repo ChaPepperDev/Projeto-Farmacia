@@ -9,7 +9,7 @@ public class Cliente {
 
     public Cliente(String nome, String cpf, boolean registrado) {
         this.nome = nome;
-        this.nome = cpf;
+        this.cpf = cpf;
         this.registrado = registrado;
         this.historicoDeCompras = new ArrayList<>();
     }
@@ -43,6 +43,10 @@ public class Cliente {
 
     public double obterDescontoCliente() {
         return registrado ? 5.0 : 0.0; // desconto de 5%
+    }
+
+    public List<String> getHistoricoDeCompras() {
+        return historicoDeCompras;
     }
 
     @Override

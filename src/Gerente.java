@@ -1,16 +1,16 @@
 public class Gerente extends Caixa {
-    public Gerente(String nome, String cargo, double salario) {
-        super(nome, cargo, salario);
+    public Gerente(String nome, String cargo, double salario, Inventario inventario) {
+        super(nome, cargo, salario, inventario);
     }
 
     @Override
-    public void processarVenda(Inventario inventario, Remedios remedios, int quantidade, Cliente cliente, double descontoGerenteOuCaixa) {
+    public void processarVendas(Remedios remedios, int quantidade, Cliente cliente, double descontoGerenteOuCaixa) {
         if (descontoGerenteOuCaixa > 30.0) {
             System.out.println("GERENTE NÃO PODE APLIACAR MAIS DE 30% DE DESCONTO.");
             return;
         }
 
-        realizarVenda(inventario, remedios, quantidade, cliente, descontoGerenteOuCaixa);
+        Venda.processarVendas(this, inventario, remedios, quantidade, cliente, descontoGerenteOuCaixa);
     }
 
     public void aplicarDesconto(Remedios remedios, double percentual) {

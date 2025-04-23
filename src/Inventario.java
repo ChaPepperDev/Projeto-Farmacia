@@ -22,10 +22,14 @@ public class Inventario {
         }
     }
     public void listarEstoque() {
+        System.out.println("\n=== INVENTARIO ATUALIZADO ===");
+
         for (Map.Entry<Remedios, Integer> entry : estoque.entrySet()) {
             Remedios r = entry.getKey();
             int qtd = entry.getValue();
             System.out.println(r.getNome() + " | Preço: R$" + r.getPreco() + " | Validade: " + r.getValidade() + "| Quantidade: " + qtd);
         }
+
+        System.out.println("==========================\n");
     }
 }
